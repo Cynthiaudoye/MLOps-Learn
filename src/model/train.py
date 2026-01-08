@@ -1,5 +1,10 @@
-# Import libraries
-
+# -----------------------------
+# Imports labraries
+# -----------------------------
+import logging
+import numpy as np
+from sklearn.model_selection import train_test_split
+import mlflow
 import argparse
 import glob
 import os
@@ -8,6 +13,8 @@ import pandas as pd
 
 from sklearn.linear_model import LogisticRegression
 
+# Enable MLflow autologging
+mlflow.autolog()
 
 # define functions
 def main(args):
@@ -36,20 +43,9 @@ def get_csvs_df(path):
 # TO DO: add function to split data
 
 # -----------------------------
-# Imports (top of train.py)
-# -----------------------------
-import logging
-import numpy as np
-from sklearn.model_selection import train_test_split
-import mlflow
-
-# Enable MLflow autologging
-mlflow.autolog()
-
-# -----------------------------
 # Split data function
 # -----------------------------
-def split_data(df, test_size=0.30, random_state=0):
+def split_data(df, test_size, random_state):
     """
     Splits the dataframe into train and test sets.
 
