@@ -35,6 +35,59 @@ def get_csvs_df(path):
 
 # TO DO: add function to split data
 
+# -----------------------------
+# Imports (top of train.py)
+# -----------------------------
+import logging
+import numpy as np
+from sklearn.model_selection import train_test_split
+import mlflow
+
+# Enable MLflow autologging
+mlflow.autolog()
+
+# -----------------------------
+# Split data function
+# -----------------------------
+def split_data(df, test_size=0.30, random_state=0):
+    """
+    Splits the dataframe into train and test sets.
+
+    Parameters:
+        df (DataFrame): Input dataframe containing features + target.
+        test_size (float): Proportion of data to use for testing.
+        random_state (int): Seed for reproducibility.
+
+    Returns:
+        X_train, X_test, y_train, y_test
+    """
+
+    logging.info("Starting data split...")
+
+    # Select features and target
+    feature_cols = [
+        'Pregnancies', 'PlasmaGlucose', 'DiastolicBloodPressure',
+        'TricepsThickness', 'SerumInsulin', 'BMI',
+        'DiabetesPedigree', 'Age'
+    ]
+
+    X = df[feature_cols].values
+    y = df['Diabetic'].values
+
+    logging.info(f"Feature matrix shape: {X.shape}")
+    logging.info(f"Target distribution: {np.unique(y, return_counts=True)}")
+
+    # Perform train-test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=random_state
+    )
+
+    logging.info("Data split completed successfully.")
+    logging.info(f"Training samples: {len(X_train)}, Test samples: {len(X_test)}")
+
+    return X_train, X_test, y_train, y_test
+
+
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # train model
